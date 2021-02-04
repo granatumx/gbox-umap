@@ -17,7 +17,7 @@ def main():
     embedding = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric).fit_transform(df.values.T)
 
     plt.figure()
-    plt.scatter(embedding[:, 0], embedding[:, 1], min(5000 / df.shape[0], 100.0))
+    plt.scatter(embedding[:, 0], embedding[:, 1], min(5000 / df.shape[0], 64.0))
     plt.xlabel('UMAP dim. 1')
     plt.ylabel('UMAP dim. 2')
     plt.tight_layout()
