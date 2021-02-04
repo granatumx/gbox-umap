@@ -45,6 +45,7 @@ frontend:
         in clustering, or in finer topological structure. Larger values of `min_dist` will prevent UMAP from packing
         point together and will focus instead on the preservation of the broad topological structure instead.
       default: 0.1
+      step: 0.000000000001
     - injectInto: metric
       type: select
       label: Metric (metric)
