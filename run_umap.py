@@ -13,8 +13,9 @@ def main():
     n_neighbors = gn.get_arg('n_neighbors')
     min_dist = gn.get_arg('min_dist')
     metric = gn.get_arg('metric')
+    random_seed = gn.get_arg('random_seed')
 
-    embedding = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric).fit_transform(df.values.T)
+    embedding = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values.T)
 
     plt.figure()
     plt.scatter(embedding[:, 0], embedding[:, 1], min(5000 / df.shape[0], 36.0))

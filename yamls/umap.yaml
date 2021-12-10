@@ -46,6 +46,12 @@ frontend:
         point together and will focus instead on the preservation of the broad topological structure instead.
       default: 0.1
       step: 0.000000000001
+    - type: seed
+      injectInto: random_seed
+      label: Random seed
+      description: >-
+        The UMAP process is stochastic and as such requires a seed to reproduce the same UMAP.
+      default: 13513
     - injectInto: metric
       type: select
       label: Metric (metric)
