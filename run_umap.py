@@ -28,7 +28,7 @@ def main():
 
     if whether_parametric:
         from umap.parametric_umap import ParametricUMAP
-    	embedding = ParametricUMAP(n_epochs=n_epochs).fit_transform(df.values.T)
+        embedding = ParametricUMAP(n_epochs=n_epochs).fit_transform(df.values.T)
     else:
         if dens_lambda > 0.0:
             embedding = umap.UMAP(densmap=True, dens_lambda=dens_lambda, n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values.T)
