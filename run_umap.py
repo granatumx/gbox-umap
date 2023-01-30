@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 
 import scanpy as sc
 import numpy as np
+import umap
 
 from granatum_sdk import Granatum
 import time
@@ -15,15 +16,17 @@ def main():
     n_neighbors = gn.get_arg('n_neighbors')
     min_dist = gn.get_arg('min_dist')
     n_pcs = gn.get_arg('n_pcs')
+    if n_pcs == 0:
+       n_pcs = None
     metric = gn.get_arg('metric')
     random_seed = gn.get_arg('random_seed')
 
-    adata = sc.AnnData(df.copy(), dtype=np.float64)  # Do not want to destroy the data variable
-    sc.tl.pca(adata, svd_solver='arpack', random_state=random_seed)
-    sc.pp.neighbors(adata, n_neighbors=n_neighbors, n_pcs=n_pcs, metric=metric)
-    sc.tl.umap(adata, min_dist=min_dist, random_state=random_seed)
+    #adata = sc.AnnData(df.copy(), dtype=np.float64)  # Do not want to destroy the data variable
+    #sc.tl.pca(adata, svd_solver='arpack', random_state=random_seed)
+    #sc.pp.neighbors(adata, n_neighbors=n_neighbors, n_pcs=n_pcs, metric=metric)
+    #sc.tl.umap(adata, min_dist=min_dist, random_state=random_seed)
 
-    #embedding = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values.T)
+    embedding = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values.T)
     embedding = adata.obsm["X_umap"]
 
     plt.figure()
