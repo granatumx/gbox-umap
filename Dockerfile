@@ -1,6 +1,9 @@
 FROM granatumx/gbox-py-sdk:1.0.0
 
-RUN pip install umap-learn scanpy python-igraph leidenalg scipy
+RUN apt-get update
+RUN apt-get upgrade -y
+
+RUN pip install -U umap-learn scanpy python-igraph leidenalg scipy
 
 COPY . .
 
