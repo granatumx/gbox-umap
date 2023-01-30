@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 
 import scanpy as sc
+import numpy as np
 
 from granatum_sdk import Granatum
 import time
