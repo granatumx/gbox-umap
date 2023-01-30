@@ -46,6 +46,13 @@ frontend:
         point together and will focus instead on the preservation of the broad topological structure instead.
       default: 0.1
       step: 0.000000000001
+    - injectInto: n_pcs
+      type: number
+      label: Number of principal components used in neighborhood estimation (Default is 0)
+      description: >-
+        The `n_pcs` parameter controls if neighborhood is calculated from the principal components. Refer to the UMAP documentation. For example, the split-bio pipeline uses 50 as a default.
+      default: 0
+      step: 1
     - type: seed
       injectInto: random_seed
       label: Random seed
