@@ -17,6 +17,8 @@ meta:
     topological structure.
 
     The details for the underlying mathematics can be found in [McInnes, L, Healy, J, and Melville, J](https://arxiv.org/abs/1802.03426).
+
+    DensMAP has been added (https://www.biorxiv.org/content/10.1101/2020.05.12.077776v1).
 endpoints:
   backend:
     cmd: python ./run_umap.py
@@ -46,13 +48,13 @@ frontend:
         point together and will focus instead on the preservation of the broad topological structure instead.
       default: 0.1
       step: 0.000000000001
-    - injectInto: n_pcs
+    - injectInto: dens_lambda
       type: number
-      label: Number of principal components used in neighborhood estimation (Default is 0)
+      label: Value for densmap if desired (Default is -1.0 or not used, use a value above 0.0 to activate)
       description: >-
-        The `n_pcs` parameter controls if neighborhood is calculated from the principal components. Refer to the UMAP documentation. For example, the split-bio pipeline uses 50 as a default.
-      default: 0
-      step: 1
+        If you would like to apply densmap, then you should set dens_lambda to a larger value.
+      default: -1.0
+      step: 0.1
     - type: seed
       injectInto: random_seed
       label: Random seed
@@ -113,6 +115,16 @@ frontend:
           label: Yule
 
       default: euclidean
+    - type: checkbox
+      label: Use a parametric model (fits with tensorflow)
+      default: false
+      injectInto: whether_parametric
+    - type: number
+      injectInto: n_epochs
+      label: Number of epochs (default is 50)
+      description: >-
+        The Parametric UMAP uses a neural network to train on the data. Set this value to the number of epochs desired.
+      default: 50
   exports:
     - kind: sampleCoords
       extractFrom: UMAP coordinates

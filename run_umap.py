@@ -15,18 +15,25 @@ def main():
     df = gn.pandas_from_assay(gn.get_import('assay'))
     n_neighbors = gn.get_arg('n_neighbors')
     min_dist = gn.get_arg('min_dist')
-    n_pcs = gn.get_arg('n_pcs')
-    if n_pcs == 0:
-       n_pcs = None
+    dens_lambda = gn.get_arg('dens_lambda')
     metric = gn.get_arg('metric')
     random_seed = gn.get_arg('random_seed')
+    whether_parametric = gn.get_arg('whether_parametric')
+    n_epochs = gn.get_arg('n_epochs')
 
     #adata = sc.AnnData(df.copy(), dtype=np.float64)  # Do not want to destroy the data variable
     #sc.tl.pca(adata, svd_solver='arpack', random_state=random_seed)
     #sc.pp.neighbors(adata, n_neighbors=n_neighbors, n_pcs=n_pcs, metric=metric)
     #sc.tl.umap(adata, min_dist=min_dist, random_state=random_seed)
 
-    embedding = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values.T)
+    if whether_parametric:
+        from umap.parametric_umap import ParametricUMAP
+    	embedding = ParametricUMAP(n_epochs=n_epochs).fit_transform(df.values.T)
+    else:
+    	if dens_lambda > 0.0:
+            embedding = umap.UMAP(densmap=True, dens_lambda=dens_lambda, n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values.T)
+    	else:
+            embedding = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values.T)
     #embedding = adata.obsm["X_umap"]
 
     plt.figure()
