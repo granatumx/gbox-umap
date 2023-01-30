@@ -27,7 +27,7 @@ def main():
     #sc.tl.umap(adata, min_dist=min_dist, random_state=random_seed)
 
     embedding = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values.T)
-    embedding = adata.obsm["X_umap"]
+    #embedding = adata.obsm["X_umap"]
 
     plt.figure()
     plt.scatter(embedding[:, 0], embedding[:, 1], min(5000 / df.shape[0], 36.0))
