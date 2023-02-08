@@ -125,9 +125,15 @@ frontend:
       description: >-
         The Parametric UMAP uses a neural network to train on the data. Set this value to the number of epochs desired.
       default: 50
-  exports:
-    - kind: sampleCoords
-      extractFrom: UMAP coordinates
+    - type: text
+      injectInto: coord_name
+      label: Name of coordinates (default: UMAP coordinates)
+      description: >-
+        In order to know the different UMAP coordinates generated it is important to name them in each gbox.
+      default: UMAP coordinates
+#  exports:
+#    - kind: sampleCoords
+#      extractFrom: UMAP coordinates
   imports:
     - kind: assay
       label: Assay

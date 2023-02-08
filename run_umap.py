@@ -48,7 +48,8 @@ def main():
         'dimNames': ['UMAP 1', 'UMAP 2'],
         'coords': {sample_id: embedding[i, :].tolist() for i, sample_id in enumerate(df.columns)},
     }
-    gn.export_statically(umap_export, 'UMAP coordinates')
+    gn.export(umap_export, "{}".format(gn.get_arg("coord_name")), kind='sampleCoords', meta=None)
+    #gn.export_statically(umap_export, 'UMAP coordinates')
 
     toc = time.perf_counter()
     time_passed = round(toc - tic, 2)
