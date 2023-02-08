@@ -130,7 +130,7 @@ frontend:
       label: Name of coordinates (default: UMAP coordinates)
       description: >-
         In order to know the different UMAP coordinates generated it is important to name them in each gbox.
-      default: UMAP coordinates
+      default: "UMAP coordinates"
 #  exports:
 #    - kind: sampleCoords
 #      extractFrom: UMAP coordinates
