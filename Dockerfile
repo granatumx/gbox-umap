@@ -20,6 +20,7 @@ RUN pip install -U scipy
 RUN pip install -U umap-learn
 RUN pip install -U pip
 RUN pip install -U pillow
+RUN pip install -U kiwisolver
 RUN pip install -U matplotlib
 
 COPY . .
