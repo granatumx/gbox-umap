@@ -35,9 +35,9 @@ def main():
         mapper = ParametricUMAP(n_epochs=n_epochs, random_state=random_seed).fit(df.values)
     else:
         if dens_lambda > 0.0:
-            mapper = umap.UMAP(densmap=True, dens_lambda=dens_lambda, n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values)
+            mapper = umap.UMAP(densmap=True, dens_lambda=dens_lambda, n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit(df.values)
         else:
-            mapper = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values)
+            mapper = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit(df.values)
     embedding = mapper.transform(df.values)
 
     plt.figure()
