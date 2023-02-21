@@ -66,7 +66,7 @@ def main():
 
     umap_export = {
         'dimNames': ['UMAP 1', 'UMAP 2'],
-        'coords': {sample_id: embedding[i, :].tolist() for i, sample_id in enumerate(df.columns)},
+        'coords': {sample_id: embedding[i, :].tolist() for i, sample_id in enumerate(df.index)},
     }
     gn.export(umap_export, "{}".format(gn.get_arg("coord_name")), kind='sampleCoords', meta=None)
     #gn.export_statically(umap_export, 'UMAP coordinates')
