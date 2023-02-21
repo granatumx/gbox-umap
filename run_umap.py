@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import scanpy as sc
 import numpy as np
 import umap
+import ast
 
 from granatum_sdk import Granatum
 import time
@@ -12,11 +13,12 @@ def main():
 
     gn = Granatum()
 
-    df = gn.pandas_from_assay(gn.get_import('assay'))
+    df = gn.pandas_from_assay(gn.get_import('assay')).T
     n_neighbors = gn.get_arg('n_neighbors')
     min_dist = gn.get_arg('min_dist')
     dens_lambda = gn.get_arg('dens_lambda')
     metric = gn.get_arg('metric')
+    eval_along_line = gn.get_arg('eval_along_line')
     random_seed = gn.get_arg('random_seed')
     whether_parametric = gn.get_arg('whether_parametric')
     n_epochs = gn.get_arg('n_epochs')
@@ -26,23 +28,45 @@ def main():
     #sc.pp.neighbors(adata, n_neighbors=n_neighbors, n_pcs=n_pcs, metric=metric)
     #sc.tl.umap(adata, min_dist=min_dist, random_state=random_seed)
 
+    mapper = None
+
     if whether_parametric:
         from umap.parametric_umap import ParametricUMAP
-        embedding = ParametricUMAP(n_epochs=n_epochs).fit_transform(df.values.T)
+        mapper = ParametricUMAP(n_epochs=n_epochs, random_state=random_seed).fit(df.values)
     else:
         if dens_lambda > 0.0:
-            embedding = umap.UMAP(densmap=True, dens_lambda=dens_lambda, n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values.T)
+            mapper = umap.UMAP(densmap=True, dens_lambda=dens_lambda, n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values)
         else:
-            embedding = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values.T)
-    #embedding = adata.obsm["X_umap"]
+            mapper = umap.UMAP(n_neighbors=n_neighbors, min_dist=min_dist, metric=metric, random_state=random_seed).fit_transform(df.values)
+    embedding = mapper.transform(df.values)
 
     plt.figure()
     plt.scatter(embedding[:, 0], embedding[:, 1], min(5000 / df.shape[0], 36.0))
+        
     plt.xlabel('UMAP 1')
     plt.ylabel('UMAP 2')
     plt.tight_layout()
 
+
+    if eval_along_line != "":
+        myline = ast.literal_eval(eval_along_line)
+        start_pt = np.array([myline[0][0], myline[0][1]])
+        end_pt = np.array([myline[1][0], myline[1][1]])
+        plt.plot([myline[0][0], myline[1][0]], [myline[0][1], myline[1][1]], 'k-', color = 'r')
+        test_pts = [start_pt*x + end_pt*(1.0-x) for x in np.linspace(0, 1, 100)]
+        inv_xform = mapper.inverse_transform(test_pts)
+        inverse_mapped_points = pd.DataFrame(inv_xform, columns=df.columns)
+        inverse_mapped_points["xlocs"] = np.linspace(0, 1, 100)
+        variable_genes = inverse_mapped_points.std().sort_values(ascending=False).iloc[:10].index
+
     gn.add_current_figure_to_results('UMAP plot: each dot represents a cell', dpi=75)
+
+    if eval_along_line != "":
+        plt.figure()
+        inverse_mapped_points.plot(x="xlocs", y=variable_genes)
+        plt.legend()
+        gn.add_current_figure_to_results('UMAP top gene variation along cut line (red)', dpi=75)
+        
 
     umap_export = {
         'dimNames': ['UMAP 1', 'UMAP 2'],

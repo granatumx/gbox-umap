@@ -126,8 +126,14 @@ frontend:
         The Parametric UMAP uses a neural network to train on the data. Set this value to the number of epochs desired.
       default: 50
     - type: text
+      injectInto: eval_along_line
+      label: Points to evaluate along, for example (0, 0), (1, 1) to evaluate starting at (0, 0) and ending at (1, 1)
+      description: >-
+        Variation of genes will be plotted along this line looking at the top 10 variable genes
+      default: ""
+    - type: text
       injectInto: coord_name
-      label: Name of coordinates (default: UMAP coordinates)
+      label: Name of coordinates (default is UMAP coordinates)
       description: >-
         In order to know the different UMAP coordinates generated it is important to name them in each gbox.
       default: "UMAP coordinates"
