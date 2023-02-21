@@ -4,6 +4,7 @@ import scanpy as sc
 import numpy as np
 import umap
 import ast
+import pandas as pd
 
 from granatum_sdk import Granatum
 import time
