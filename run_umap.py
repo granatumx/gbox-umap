@@ -8,6 +8,15 @@ import pandas as pd
 from granatum_sdk import Granatum
 import time
 
+def vcorrcoeff(X, y, numtop=10):
+    y = np.array(np.linspace(0, 1, X.shape[1]))
+    xm = X.mean()
+    ym = np.mean(y)
+    r_num = np.sum((X-xm)*(y-ym))
+    r_den = np.sqrt(((X-xm)*(X-xm)).sum()+np.sum(np.square(y-ym)))
+    corrs = r_num/r_den
+    return np.abs(corrs).sort_values(ascending=False).iloc[:10].index
+
 def main():
     tic = time.perf_counter()
 
@@ -51,9 +60,9 @@ def main():
         test_pts = [start_pt*x + end_pt*(1.0-x) for x in np.linspace(0, 1, 100)]
         inv_xform = mapper.inverse_transform(test_pts)
         inverse_mapped_points = pd.DataFrame(inv_xform, columns=df.columns)
-        print(inverse_mapped_points.head(), flush=True)
         inverse_mapped_points["xlocs"] = np.linspace(0, 1, 100)
-        variable_genes = inverse_mapped_points.std().sort_values(ascending=False).iloc[:10].index
+        variable_genes = vcorrcoeff(inverse_mapped_points, inverse_mapped_points["xloc"])
+        #variable_genes = inverse_mapped_points.std().sort_values(ascending=False).iloc[:10].index
 
     gn.add_current_figure_to_results('UMAP plot: each dot represents a cell', dpi=75)
 
