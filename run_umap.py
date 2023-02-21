@@ -61,7 +61,7 @@ def main():
         inv_xform = mapper.inverse_transform(test_pts)
         inverse_mapped_points = pd.DataFrame(inv_xform, columns=df.columns)
         inverse_mapped_points["xlocs"] = np.linspace(0, 1, 100)
-        variable_genes = vcorrcoeff(inverse_mapped_points, inverse_mapped_points["xloc"])
+        variable_genes = vcorrcoeff(inverse_mapped_points, inverse_mapped_points["xlocs"])
         #variable_genes = inverse_mapped_points.std().sort_values(ascending=False).iloc[:10].index
 
     gn.add_current_figure_to_results('UMAP plot: each dot represents a cell', dpi=75)
