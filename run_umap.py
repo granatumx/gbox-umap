@@ -57,6 +57,7 @@ def main():
         test_pts = [start_pt*x + end_pt*(1.0-x) for x in np.linspace(0, 1, 100)]
         inv_xform = mapper.inverse_transform(test_pts)
         inverse_mapped_points = pd.DataFrame(inv_xform, columns=df.columns)
+        print(inverse_mapped_points.head(), flush=True)
         inverse_mapped_points["xlocs"] = np.linspace(0, 1, 100)
         variable_genes = inverse_mapped_points.std().sort_values(ascending=False).iloc[:10].index
 
@@ -64,7 +65,7 @@ def main():
 
     if eval_along_line != "":
         plt.figure()
-        inverse_mapped_points.plot(x="xlocs", y=variable_genes)
+        inverse_mapped_points.plot(y=variable_genes)
         plt.legend()
         gn.add_current_figure_to_results('UMAP top gene variation along cut line (red)', dpi=75)
         
