@@ -22,6 +22,7 @@ RUN pip install -U pip
 RUN pip install -U pillow
 RUN pip install -U kiwisolver
 RUN pip install -U matplotlib
+RUN pip install -U scanpy
 
 COPY . .
 
