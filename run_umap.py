@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 
-import scanpy as sc
 import numpy as np
 import umap
 import ast
@@ -23,11 +22,6 @@ def main():
     random_seed = gn.get_arg('random_seed')
     whether_parametric = gn.get_arg('whether_parametric')
     n_epochs = gn.get_arg('n_epochs')
-
-    #adata = sc.AnnData(df.copy(), dtype=np.float64)  # Do not want to destroy the data variable
-    #sc.tl.pca(adata, svd_solver='arpack', random_state=random_seed)
-    #sc.pp.neighbors(adata, n_neighbors=n_neighbors, n_pcs=n_pcs, metric=metric)
-    #sc.tl.umap(adata, min_dist=min_dist, random_state=random_seed)
 
     mapper = None
 
