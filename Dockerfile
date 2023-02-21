@@ -10,6 +10,7 @@ RUN pip install -U pynndescent
 RUN pip install -U tensorflow
 RUN pip install -U scipy
 RUN pip install -U umap-learn
+RUN pip install -U pandas
 
 COPY . .
 
